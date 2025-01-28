@@ -785,7 +785,7 @@ class Scene: SKScene {
                 // Highlight current player's rank in red and increase font size
                 if index == currentPlayerRank {
                     scoreLabel.fontColor = .red
-                    scoreLabel.fontSize = 18
+                    scoreLabel.fontSize = 20
                     scoreLabel.fontName = "DevanagariSangamMN-Bold"
                 } else {
                     scoreLabel.fontColor = .white
