@@ -4,7 +4,8 @@ import CoreData
 import CloudKit
 import Foundation
 
-class CoreDataStack {
+
+public class CoreDataStack {
     static let shared = CoreDataStack()
     
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
@@ -133,4 +134,5 @@ class CoreDataStack {
             }
         }
     }
+    
 }

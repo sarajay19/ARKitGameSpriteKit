@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5FB7F6E52D47A6BB00A11172 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5FB7F6E32D47A6BB00A11172 /* CoreDataModel.xcdatamodeld */; };
+		5FB7F6E72D48BFA500A11172 /* PlayerScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB7F6E62D48BFA500A11172 /* PlayerScore.swift */; };
+		5FB7F6EA2D48C12900A11172 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB7F68B2D46145500A11172 /* CoreDataStack.swift */; };
+		5FB7F6ED2D48CA0D00A11172 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB7F6EC2D48CA0D00A11172 /* CoreData.framework */; };
 		5FCAE4072D3E39EC00970729 /* ghost.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5FCAE4062D3E39EC00970729 /* ghost.mp3 */; };
 		E4D1C0CE1F0BEFC00065E5EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D1C0CD1F0BEFC00065E5EE /* AppDelegate.swift */; };
 		E4D1C0D01F0BEFC00065E5EE /* Scene.sks in Resources */ = {isa = PBXBuildFile; fileRef = E4D1C0CF1F0BEFC00065E5EE /* Scene.sks */; };
@@ -22,6 +25,8 @@
 		5FB7F68B2D46145500A11172 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		5FB7F6E02D47955300A11172 /* ARSpriteKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ARSpriteKit.entitlements; sourceTree = "<group>"; };
 		5FB7F6E42D47A6BB00A11172 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		5FB7F6E62D48BFA500A11172 /* PlayerScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerScore.swift; sourceTree = "<group>"; };
+		5FB7F6EC2D48CA0D00A11172 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		5FCAE4062D3E39EC00970729 /* ghost.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ghost.mp3; sourceTree = "<group>"; };
 		E4D1C0CA1F0BEFC00065E5EE /* ARSpriteKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSpriteKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4D1C0CD1F0BEFC00065E5EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -39,16 +44,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FB7F6ED2D48CA0D00A11172 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5FB7F6EB2D48C9F400A11172 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5FB7F6EC2D48CA0D00A11172 /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5FCAE3FC2D3D05CD00970729 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				E4D1C0CD1F0BEFC00065E5EE /* AppDelegate.swift */,
+				5FB7F68B2D46145500A11172 /* CoreDataStack.swift */,
+				5FB7F6E32D47A6BB00A11172 /* CoreDataModel.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -58,6 +74,7 @@
 			children = (
 				E4D1C0D31F0BEFC00065E5EE /* ViewController.swift */,
 				E4D1C0D11F0BEFC00065E5EE /* Scene.swift */,
+				5FB7F6E62D48BFA500A11172 /* PlayerScore.swift */,
 			);
 			path = ModelView;
 			sourceTree = "<group>";
@@ -78,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				E4D1C0CC1F0BEFC00065E5EE /* ARSpriteKit */,
+				5FB7F6EB2D48C9F400A11172 /* Frameworks */,
 				E4D1C0CB1F0BEFC00065E5EE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -98,8 +116,6 @@
 				5FCAE3FD2D3D05DB00970729 /* ModelView */,
 				5FCAE3FC2D3D05CD00970729 /* Model */,
 				E4D1C0DD1F0BEFC00065E5EE /* Info.plist */,
-				5FB7F68B2D46145500A11172 /* CoreDataStack.swift */,
-				5FB7F6E32D47A6BB00A11172 /* CoreDataModel.xcdatamodeld */,
 			);
 			path = ARSpriteKit;
 			sourceTree = "<group>";
@@ -204,10 +220,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FB7F6EA2D48C12900A11172 /* CoreDataStack.swift in Sources */,
 				E4D1C0D41F0BEFC00065E5EE /* ViewController.swift in Sources */,
 				E4D1C0D21F0BEFC00065E5EE /* Scene.swift in Sources */,
 				E4D1C0CE1F0BEFC00065E5EE /* AppDelegate.swift in Sources */,
 				5FB7F6E52D47A6BB00A11172 /* CoreDataModel.xcdatamodeld in Sources */,
+				5FB7F6E72D48BFA500A11172 /* PlayerScore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

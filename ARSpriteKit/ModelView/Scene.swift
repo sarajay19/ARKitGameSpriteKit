@@ -4,6 +4,8 @@ import Combine
 import CoreData
 import Foundation
 import UIKit
+import CloudKit
+
 
 // MARK: - Data Models
 struct Player: Codable {
@@ -34,82 +36,7 @@ struct QuizQuestion {
     let correctAnswer: Int
 }
 
-// MARK: - CoreDataStack
-class CoreDataStack {
-    static let shared = CoreDataStack()
 
-    lazy var persistentContainer: NSPersistentCloudKitContainer = {
-        let container = NSPersistentCloudKitContainer(name: "CoreDataModel")
-        
-        // Configure CloudKit integration
-        guard let description = container.persistentStoreDescriptions.first else {
-            fatalError("Failed to retrieve store description")
-        }
-        
-        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
-            containerIdentifier: "iCloud.AIGameNec"
-        )
-        
-        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-        
-        container.loadPersistentStores { (storeDescription, error) in
-            if let error = error as NSError? {
-                print("Failed to load persistent stores: \(error), \(error.userInfo)")
-            }
-        }
-        
-        container.viewContext.automaticallyMergesChangesFromParent = true
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        
-        return container
-    }()
-    
-    var context: NSManagedObjectContext {
-        return persistentContainer.viewContext
-    }
-    
-    func saveContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                print("Failed to save context: \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-    
-    // MARK: - Score Management
-    func savePlayerScore(name: String, email: String, score: Double, timeInSeconds: Double) {
-        let playerScore = NSEntityDescription.insertNewObject(forEntityName: "PlayerScore", into: context) as! PlayerScore
-        playerScore.id = UUID()
-        playerScore.name = name
-        playerScore.email = email
-        playerScore.score = score
-        playerScore.timeInSeconds = timeInSeconds
-        playerScore.date = Date()
-        
-        saveContext()
-    }
-    
-    func fetchLeaderboardScores(completion: @escaping ([PlayerScore]) -> Void) {
-        let fetchRequest: NSFetchRequest<PlayerScore> = PlayerScore.fetchRequest()
-        
-        // Sort by score (descending) and time (ascending)
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: "score", ascending: false),
-            NSSortDescriptor(key: "timeInSeconds", ascending: true)
-        ]
-        
-        do {
-            let scores = try context.fetch(fetchRequest)
-            completion(scores)
-        } catch {
-            print("Error fetching scores: \(error)")
-            completion([])
-        }
-    }
-}
 // MARK: - Scene Class
 
 class Scene: SKScene {
@@ -301,13 +228,6 @@ class Scene: SKScene {
             "games_played": gamesPlayed
         ]
         UserDefaults.standard.set(playerData, forKey: "playerData")
-
-        // Save to file
-//        let encoder = JSONEncoder()
-//        if let encoded = try? encoder.encode(player) {
-//            let url = getDocumentsDirectory().appendingPathComponent("playerData.json")
-//            try? encoded.write(to: url)
-//        }
         
     }
 
@@ -602,12 +522,7 @@ class Scene: SKScene {
     
     func saveScore() {
         // Save to CoreData
-        CoreDataStack.shared.savePlayerScore(
-            name: playerName,
-            email: playerEmail,
-            score: totalPoints,
-            timeInSeconds: elapsedTime
-        )
+        saveScoresToCoreData()
         
         // Refresh leaderboard
         refreshLeaderboard()
@@ -620,8 +535,9 @@ class Scene: SKScene {
         print("==================\n")
     }
 
+
     func refreshLeaderboard() {
-        CoreDataStack.shared.fetchLeaderboardScores { [weak self] scores in
+        CoreDataStack.shared.fetchLeaderboardScores { [weak self] (scores: [PlayerScore]) in
             Scene.scores = scores
             self?.displayLeaderboardOverlay(canExit: true)
         }
@@ -639,8 +555,6 @@ class Scene: SKScene {
             return nil
         }
     }
-
-
 
     
     private func loadScores() {
@@ -947,27 +861,6 @@ class Scene: SKScene {
         }
     }
 
-//    func handleAnswer(selectedAnswer: Int, correctAnswer: Int) {
-//        guard let viewController = self.view?.window?.rootViewController else { return }
-//        
-//        let isCorrect = selectedAnswer == correctAnswer
-//        
-//        if isCorrect {
-//            // Award points based on attempts
-//            let points = currentAttempts == 0 ? 1.0 : 0.5
-//            totalPoints += points
-//            showFeedback(correct: true, selectedAnswer: selectedAnswer, correctAnswer: correctAnswer, pointsAwarded: points)
-//        } else {
-//            currentAttempts += 1
-//            
-//            if currentAttempts >= 2 {
-//                // No points awarded after two failed attempts
-//                showFinalFeedback(selectedAnswer: selectedAnswer, correctAnswer: correctAnswer)
-//            } else {
-//                showFeedback(correct: false, selectedAnswer: selectedAnswer, correctAnswer: correctAnswer, pointsAwarded: 0)
-//            }
-//        }
-//    }
     
     func handleAnswer(selectedAnswer: Int, correctAnswer: Int, ghostName: String) {
         guard let viewController = self.view?.window?.rootViewController else { return }
