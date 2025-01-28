@@ -1,3 +1,10 @@
+//
+//  Scene.swift
+//  ARSpriteKit
+//
+//  Main game scene implementing AR-based quiz gameplay.
+//  Manages ghost placement, user interactions, scoring, and game state.
+
 import SpriteKit
 import ARKit
 import Combine
@@ -8,6 +15,19 @@ import CloudKit
 
 
 // MARK: - Data Models
+
+/**
+ * Represents a player in the game with their basic information and stats.
+ *
+ * Properties:
+ * - email: Unique identifier for the player
+ * - name: Display name of the player
+ * - highScore: Player's highest achieved score
+ * - totalTimePlayed: Cumulative time spent playing
+ * - gamesPlayed: Number of games completed
+ */
+
+//Player model representing user information and game statistics
 struct Player: Codable {
     let email: String
     let name: String
@@ -16,6 +36,17 @@ struct Player: Codable {
     var gamesPlayed: Int
 }
 
+/**
+ * Represents a single gaming session with associated metrics.
+ *
+ * Properties:
+ * - playerEmail: Email of the player who played this session
+ * - score: Points earned in this session
+ * - timeSpent: Duration of the session in seconds
+ * - date: When the session occurred
+ */
+
+// GameSession model tracking individual gameplay sessions
 struct GameSession: Codable {
     var playerEmail: String
     let score: Double
@@ -30,6 +61,16 @@ struct GameSession: Codable {
     }
 }
 
+/**
+ * Represents a quiz question with multiple choice options.
+ *
+ * Properties:
+ * - question: The actual question text
+ * - options: Array of possible answers
+ * - correctAnswer: Index of the correct answer in options array
+ */
+
+// QuizQuestion model defining the structure of game questions
 struct QuizQuestion {
     let question: String
     let options: [String]
@@ -139,7 +180,7 @@ class Scene: SKScene {
             ))
         ]
     
-        let killSound = SKAction.playSoundFileNamed("ghost", waitForCompletion: true)
+        let killSound = SKAction.playSoundFileNamed("fade", waitForCompletion: true)
         var cameraPosition: simd_float4x4?
         var sceneView: ARSKView?
         
@@ -206,7 +247,18 @@ class Scene: SKScene {
     let interactionThreshold: Float = 1.0
     
     // MARK: - Data Storing
-    
+    /**
+     * Saves player data to both local storage and UserDefaults.
+     *
+     * Parameters:
+     * - email: Player's email address
+     * - name: Player's display name
+     * - highScore: Player's highest score
+     * - totalTimePlayed: Total time played in seconds
+     * - gamesPlayed: Number of games completed
+     *
+     * Throws: Encoding errors if data cannot be properly serialized
+     */
     func savePlayerData(email: String, name: String, highScore: Double, totalTimePlayed: Double, gamesPlayed: Int) {
         let player = Player(email: email, name: name, highScore: highScore, totalTimePlayed: totalTimePlayed, gamesPlayed: gamesPlayed)
 
@@ -231,7 +283,11 @@ class Scene: SKScene {
         
     }
 
-    
+    /**
+     * Returns the URL for the app's documents directory.
+     *
+     * Returns: URL pointing to the documents directory
+     */
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
@@ -239,7 +295,13 @@ class Scene: SKScene {
 
     
     // MARK: - Scene Lifecycle
-    
+    /**
+     * Called when the scene is presented in the view.
+     * Handles initial setup and game state management.
+     *
+     * Parameters:
+     * - view: The SKView in which the scene is presented
+     */
     override func didMove(to view: SKView) {
         removeAllChildren()
         
@@ -260,7 +322,10 @@ class Scene: SKScene {
     }
     
     // MARK: - Game Setup
-    
+    /**
+     * Displays input dialog for player information.
+     * Collects name and email before starting the game.
+     */
     private func showNameInput() {
         DispatchQueue.main.async {
             if let viewController = self.view?.window?.rootViewController {
@@ -305,14 +370,25 @@ class Scene: SKScene {
             }
         }
     }
-
+    
+    /**
+     * Displays an error alert to the user.
+     *
+     * Parameters:
+     * - title: Alert title
+     * - message: Detailed error message
+     */
     private func showError(_ title: String, _ message: String) {
         guard let viewController = self.view?.window?.rootViewController else { return }
         let errorAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         viewController.present(errorAlert, animated: true)
     }
-
+    
+    /**
+     * Initializes and starts a new game session.
+     * Sets up UI, timer, and ghost positions.
+     */
     private func startGame() {
         setupUI()
         setupTimer()
@@ -324,12 +400,28 @@ class Scene: SKScene {
         }
     }
     
+    /**
+         * Sets up all UI elements in the scene.
+         *
+         * Parameters: None
+         *
+         * Note: This function initializes and configures the background,
+         * labels, and buttons in the proper sequence
+         */
     private func setupUI() {
         setupBackgroundUI()
         setupLabels()
         setupButtons()
     }
     
+    /**
+     * Sets up the background circle UI element.
+     *
+     * Parameters: None
+     *
+     * Note: Creates and positions a semi-transparent black circle
+     * in the upper portion of the scene
+     */
     private func setupBackgroundUI() {
         let backgroundCircle = SKShapeNode(circleOfRadius: 50)
         backgroundCircle.fillColor = UIColor.black.withAlphaComponent(0.5)
@@ -338,6 +430,17 @@ class Scene: SKScene {
         addChild(backgroundCircle)
     }
     
+    /**
+     * Initializes and positions all label nodes in the scene.
+     *
+     * Parameters: None
+     *
+     * Note: Sets up multiple labels including:
+     * - Ghost count label
+     * - Points label
+     * - Timer label
+     * Each with specific fonts, sizes, and positions
+     */
     private func setupLabels() {
         ghostsLabel.fontSize = 15
         ghostsLabel.fontName = "DevanagariSangamMN-Bold"
@@ -369,6 +472,14 @@ class Scene: SKScene {
         
     }
     
+    /**
+     * Creates and positions all button nodes in the scene.
+     *
+     * Parameters: None
+     *
+     * Note: Configures the stop game button with specific styling
+     * and positioning
+     */
     private func setupButtons() {
         stopGameButton = SKLabelNode(text: "End Game")
         stopGameButton.fontSize = 20
@@ -381,6 +492,14 @@ class Scene: SKScene {
 
     }
     
+    /**
+     * Initializes and starts the game timer.
+     *
+     * Parameters: None
+     *
+     * Note: Creates a timer that updates every 0.1 seconds and
+     * sets the game state to active
+     */
     private func startTimer() {
         startTime = Date()
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
@@ -390,7 +509,14 @@ class Scene: SKScene {
     }
     
     // MARK: - Ghost Setup and Interaction
-    
+    /**
+     * Sets up ghost entities in the AR scene.
+     *
+     * Parameters: None
+     *
+     * Note: Creates AR anchors for each ghost and positions them
+     * in the scene with their respective transforms
+     */
     func setupGhostsInRoom() {
         guard let sceneView = sceneView else { return }
         
@@ -519,7 +645,16 @@ class Scene: SKScene {
     }
     
     // MARK: - Score Management
-    
+    /**
+     * Saves current game score to persistent storage.
+     *
+     * Parameters: None
+     *
+     * Note:
+     * - Saves score to CoreData
+     * - Updates leaderboard
+     * - Prints debug information about the saved score
+     */
     func saveScore() {
         // Save to CoreData
         saveScoresToCoreData()
@@ -543,7 +678,15 @@ class Scene: SKScene {
         }
     }
 
-
+    /**
+     * Loads player data from local JSON file.
+     *
+     * Parameters: None
+     *
+     * Returns: Optional Player object if data exists and can be decoded
+     *
+     * Throws: Decoding errors if JSON data is invalid
+     */
     func loadPlayerDataFromFile() -> Player? {
         let url = getDocumentsDirectory().appendingPathComponent("playerData.json")
         do {
@@ -704,6 +847,16 @@ class Scene: SKScene {
                     }
                 }
     
+    /**
+     * Shows confirmation dialog for stopping the game.
+     *
+     * Parameters: None
+     *
+     * Note: Displays alert with:
+     * - Warning message about game termination
+     * - Yes/No options for confirmation
+     * - Handles score saving if confirmed
+     */
     private func showStopGameConfirmation() {
         guard let viewController = self.view?.window?.rootViewController else { return }
 
@@ -724,7 +877,20 @@ class Scene: SKScene {
         
         viewController.present(alert, animated: true)
     }
-
+    
+    /**
+     * Displays the leaderboard overlay screen.
+     *
+     * Parameters:
+     * - canExit: Boolean indicating if exit button should be shown
+     *
+     * Note:
+     * - Clears existing scene
+     * - Loads and sorts scores
+     * - Displays top 10 scores
+     * - Highlights current player's score
+     * - Optionally shows exit button
+     */
     private func displayLeaderboardOverlay(canExit: Bool = false) {
         // Ensure scores are loaded before displaying
         loadScores()
@@ -812,7 +978,18 @@ class Scene: SKScene {
     }
     
     
-
+    /**
+     * Shows quiz question for a specific ghost.
+     *
+     * Parameters:
+     * - ghostName: String identifying which ghost's question to display
+     *
+     * Note: Displays an alert controller with:
+     * - Question text
+     * - Multiple choice options
+     * - Skip option
+     * - Remaining attempts counter
+     */
     func showQuizQuestion(for ghostName: String) {
         guard let viewController = self.view?.window?.rootViewController,
               let questionData = ghostQuestions.first(where: { $0.ghostName == ghostName }) else { return }
@@ -861,7 +1038,19 @@ class Scene: SKScene {
         }
     }
 
-    
+    /**
+     * Processes player's answer to quiz question.
+     *
+     * Parameters:
+     * - selectedAnswer: Integer index of the selected answer
+     * - correctAnswer: Integer index of the correct answer
+     * - ghostName: String identifying the ghost being questioned
+     *
+     * Note: Handles scoring logic:
+     * - Awards 1.0 points for first correct attempt
+     * - Awards 0.5 points for second correct attempt
+     * - No points after two failed attempts
+     */
     func handleAnswer(selectedAnswer: Int, correctAnswer: Int, ghostName: String) {
         guard let viewController = self.view?.window?.rootViewController else { return }
         
@@ -889,6 +1078,18 @@ class Scene: SKScene {
         }
     }
     
+    /**
+     * Shows feedback after answer submission.
+     *
+     * Parameters:
+     * - correct: Boolean indicating if answer was correct
+     * - selectedAnswer: Integer index of selected answer
+     * - correctAnswer: Integer index of correct answer
+     * - pointsAwarded: Double value of points awarded
+     *
+     * Note: Displays appropriate feedback message and updates
+     * ghost state if answer was correct
+     */
     func showFeedback(correct: Bool, selectedAnswer: Int, correctAnswer: Int, pointsAwarded: Double) {
         guard let viewController = self.view?.window?.rootViewController else { return }
         
@@ -923,30 +1124,6 @@ class Scene: SKScene {
         viewController.present(alertController, animated: true)
     }
     
-//    func showFinalFeedback(selectedAnswer: Int, correctAnswer: Int) {
-//        guard let viewController = self.view?.window?.rootViewController else { return }
-//        
-//        let currentQuestion = ghostQuestions[currentQuestionIndex].question
-//        let correctAnswerText = currentQuestion.options[correctAnswer]
-//        let selectedAnswerText = currentQuestion.options[selectedAnswer]
-//        
-//        let alertController = UIAlertController(
-//            title: "Incorrect - No points awarded",
-//            message: "\nYour answer: \(selectedAnswerText) ❌\n\nCorrect answer: \(correctAnswerText) ✅",
-//            preferredStyle: .alert
-//        )
-//        
-//        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-//            if let currentGhost = self?.currentGhost {
-//                self?.fadeOutGhost(currentGhost)
-//            }
-//            self?.currentAttempts = 0
-//            self?.currentGhost = nil
-//        }
-//        
-//        alertController.addAction(okAction)
-//        viewController.present(alertController, animated: true)
-//    }
     
     func showFinalFeedback(selectedAnswer: Int, correctAnswer: Int) {
         guard let viewController = self.view?.window?.rootViewController else { return }
@@ -975,8 +1152,18 @@ class Scene: SKScene {
         alertController.addAction(okAction)
         viewController.present(alertController, animated: true)
     }
-
-
+    
+    /**
+     * Applies floating animation to ghost node.
+     *
+     * Parameters:
+     * - ghost: SKNode to be animated
+     *
+     * Note: Applies multiple animations:
+     * - Initial fade in
+     * - Continuous floating motion
+     * - Smooth easing for natural movement
+     */
     func applyGhostAnimations(to ghost: SKNode) {
         
         let easeIn = SKAction.moveBy(x: 0, y: floatDistance, duration: floatDuration/2)
@@ -1003,6 +1190,18 @@ class Scene: SKScene {
         
     }
     
+    /**
+     * Fades out ghost with animation when collected.
+     *
+     * Parameters:
+     * - ghostNode: SKNode to be removed
+     *
+     * Note:
+     * - Plays sound effect
+     * - Performs flip and fade animation
+     * - Updates ghost count
+     * - Prints debug information
+     */
     func fadeOutGhost(_ ghostNode: SKNode) {
         
         // Stop existing animations
@@ -1043,8 +1242,6 @@ class Scene: SKScene {
             }
         }
         
-        // Optionally, remove questions or any UI related to ghosts
-        // This could be done in your showLeaderboardOverlay method
     }
 
     

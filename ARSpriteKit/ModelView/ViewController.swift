@@ -1,3 +1,10 @@
+//
+//  ViewController.swift
+//  ARSpriteKit
+//
+//  Main view controller managing AR experience and game interactions.
+//  Handles AR session setup, scene configuration, and user interactions.
+
 import UIKit
 import SpriteKit
 import ARKit
@@ -6,6 +13,7 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
     
     @IBOutlet weak var sceneView: ARSKView!
     
+    /// Called after the controller's view is loaded into memory.
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -16,6 +24,7 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
         setupARSession()
     }
     
+    /// Configures the ARSKView with necessary settings.
     private func setupSceneView() {
         // Ensure sceneView is properly configured
         guard let sceneView = self.sceneView else {
@@ -44,6 +53,7 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
         sceneView.presentScene(scene)
     }
     
+    /// Configures the AR session with necessary settings.
     private func setupARSession() {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
@@ -55,6 +65,8 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
         sceneView.session.run(configuration)
     }
     
+    /// Notifies the view controller that its view is about to be added to a view hierarchy.
+    /// - Parameter animated: If `true`, the view is being added using an animation.
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -64,6 +76,8 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
         sceneView.session.run(configuration)
     }
     
+    /// Notifies the view controller that its view is about to be removed from a view hierarchy.
+    /// - Parameter animated: If `true`, the disappearance of the view is being animated.
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -73,6 +87,11 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
     
     // MARK: - ARSKViewDelegate Methods
     
+    /// Provides a SpriteKit node for the specified AR anchor.
+    /// - Parameters:
+    ///   - view: The ARSKView rendering the scene.
+    ///   - anchor: The AR anchor for which to provide a node.
+    /// - Returns: A SpriteKit node, or `nil` if no node should be added.
     func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode? {
         guard let imageName = anchor.name else { return nil }
         
@@ -91,6 +110,10 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
     
     // MARK: - ARSessionDelegate Methods
     
+    /// Tells the delegate that the AR session failed.
+    /// - Parameters:
+    ///   - session: The AR session that failed.
+    ///   - error: An error object containing details of the failure.
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Handle AR session failure
         let alertController = UIAlertController(
@@ -102,6 +125,8 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
         present(alertController, animated: true)
     }
     
+    /// Tells the delegate that the AR session was interrupted.
+    /// - Parameter session: The AR session that was interrupted.
     func sessionWasInterrupted(_ session: ARSession) {
         // Handle session interruption
         let alertController = UIAlertController(
@@ -113,6 +138,8 @@ class ViewController: UIViewController, ARSKViewDelegate, ARSessionDelegate {
         present(alertController, animated: true)
     }
     
+    /// Tells the delegate that the AR session interruption has ended.
+    /// - Parameter session: The AR session whose interruption ended.
     func sessionInterruptionEnded(_ session: ARSession) {
         // Restart the AR session
         let configuration = ARWorldTrackingConfiguration()

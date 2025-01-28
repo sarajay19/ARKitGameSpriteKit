@@ -4,6 +4,8 @@
 //
 //  Created by Sara AlQuwaifli on 28/01/2025.
 //
+//  Core Data entity for storing player scores and game statistics.
+//  Manages persistence of game results and leaderboard data.
 
 import Foundation
 import CoreData
