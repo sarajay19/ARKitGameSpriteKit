@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E4231FE41F13099000CBE4C1 /* ghost.wav in Resources */ = {isa = PBXBuildFile; fileRef = E4231FE31F13098200CBE4C1 /* ghost.wav */; };
+		5FB7F6E52D47A6BB00A11172 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5FB7F6E32D47A6BB00A11172 /* CoreDataModel.xcdatamodeld */; };
+		5FCAE4072D3E39EC00970729 /* ghost.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5FCAE4062D3E39EC00970729 /* ghost.mp3 */; };
 		E4D1C0CE1F0BEFC00065E5EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D1C0CD1F0BEFC00065E5EE /* AppDelegate.swift */; };
 		E4D1C0D01F0BEFC00065E5EE /* Scene.sks in Resources */ = {isa = PBXBuildFile; fileRef = E4D1C0CF1F0BEFC00065E5EE /* Scene.sks */; };
 		E4D1C0D21F0BEFC00065E5EE /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D1C0D11F0BEFC00065E5EE /* Scene.swift */; };
@@ -18,7 +19,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E4231FE31F13098200CBE4C1 /* ghost.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ghost.wav; sourceTree = "<group>"; };
+		5FB7F68B2D46145500A11172 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		5FB7F6E02D47955300A11172 /* ARSpriteKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ARSpriteKit.entitlements; sourceTree = "<group>"; };
+		5FB7F6E42D47A6BB00A11172 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		5FCAE4062D3E39EC00970729 /* ghost.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ghost.mp3; sourceTree = "<group>"; };
 		E4D1C0CA1F0BEFC00065E5EE /* ARSpriteKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARSpriteKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4D1C0CD1F0BEFC00065E5EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E4D1C0CF1F0BEFC00065E5EE /* Scene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Scene.sks; sourceTree = "<group>"; };
@@ -41,6 +45,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5FCAE3FC2D3D05CD00970729 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E4D1C0CD1F0BEFC00065E5EE /* AppDelegate.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5FCAE3FD2D3D05DB00970729 /* ModelView */ = {
+			isa = PBXGroup;
+			children = (
+				E4D1C0D31F0BEFC00065E5EE /* ViewController.swift */,
+				E4D1C0D11F0BEFC00065E5EE /* Scene.swift */,
+			);
+			path = ModelView;
+			sourceTree = "<group>";
+		};
+		5FCAE3FE2D3D05E600970729 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5FCAE4062D3E39EC00970729 /* ghost.mp3 */,
+				E4D1C0CF1F0BEFC00065E5EE /* Scene.sks */,
+				E4D1C0D51F0BEFC00065E5EE /* Main.storyboard */,
+				E4D1C0DA1F0BEFC00065E5EE /* LaunchScreen.storyboard */,
+				E4D1C0D81F0BEFC00065E5EE /* Assets.xcassets */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		E4D1C0C11F0BEFC00065E5EE = {
 			isa = PBXGroup;
 			children = (
@@ -60,15 +93,13 @@
 		E4D1C0CC1F0BEFC00065E5EE /* ARSpriteKit */ = {
 			isa = PBXGroup;
 			children = (
-				E4231FE31F13098200CBE4C1 /* ghost.wav */,
-				E4D1C0CD1F0BEFC00065E5EE /* AppDelegate.swift */,
-				E4D1C0CF1F0BEFC00065E5EE /* Scene.sks */,
-				E4D1C0D11F0BEFC00065E5EE /* Scene.swift */,
-				E4D1C0D31F0BEFC00065E5EE /* ViewController.swift */,
-				E4D1C0D51F0BEFC00065E5EE /* Main.storyboard */,
-				E4D1C0D81F0BEFC00065E5EE /* Assets.xcassets */,
-				E4D1C0DA1F0BEFC00065E5EE /* LaunchScreen.storyboard */,
+				5FB7F6E02D47955300A11172 /* ARSpriteKit.entitlements */,
+				5FCAE3FE2D3D05E600970729 /* View */,
+				5FCAE3FD2D3D05DB00970729 /* ModelView */,
+				5FCAE3FC2D3D05CD00970729 /* Model */,
 				E4D1C0DD1F0BEFC00065E5EE /* Info.plist */,
+				5FB7F68B2D46145500A11172 /* CoreDataStack.swift */,
+				5FB7F6E32D47A6BB00A11172 /* CoreDataModel.xcdatamodeld */,
 			);
 			path = ARSpriteKit;
 			sourceTree = "<group>";
@@ -80,6 +111,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E4D1C0E01F0BEFC00065E5EE /* Build configuration list for PBXNativeTarget "ARSpriteKit" */;
 			buildPhases = (
+				58B212CAEF37956EF6B64EB8 /* [CP] Check Pods Manifest.lock */,
 				E4D1C0C61F0BEFC00065E5EE /* Sources */,
 				E4D1C0C71F0BEFC00065E5EE /* Frameworks */,
 				E4D1C0C81F0BEFC00065E5EE /* Resources */,
@@ -109,7 +141,6 @@
 				};
 			};
 			buildConfigurationList = E4D1C0C51F0BEFC00065E5EE /* Build configuration list for PBXProject "ARSpriteKit" */;
-			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -117,6 +148,7 @@
 				Base,
 			);
 			mainGroup = E4D1C0C11F0BEFC00065E5EE;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = E4D1C0CB1F0BEFC00065E5EE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -133,13 +165,39 @@
 			files = (
 				E4D1C0D01F0BEFC00065E5EE /* Scene.sks in Resources */,
 				E4D1C0DC1F0BEFC00065E5EE /* LaunchScreen.storyboard in Resources */,
-				E4231FE41F13099000CBE4C1 /* ghost.wav in Resources */,
 				E4D1C0D91F0BEFC00065E5EE /* Assets.xcassets in Resources */,
+				5FCAE4072D3E39EC00970729 /* ghost.mp3 in Resources */,
 				E4D1C0D71F0BEFC00065E5EE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		58B212CAEF37956EF6B64EB8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ARSpriteKit-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "
+";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E4D1C0C61F0BEFC00065E5EE /* Sources */ = {
@@ -149,6 +207,7 @@
 				E4D1C0D41F0BEFC00065E5EE /* ViewController.swift in Sources */,
 				E4D1C0D21F0BEFC00065E5EE /* Scene.swift in Sources */,
 				E4D1C0CE1F0BEFC00065E5EE /* AppDelegate.swift in Sources */,
+				5FB7F6E52D47A6BB00A11172 /* CoreDataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,7 +331,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -281,10 +341,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_ENTITLEMENTS = ARSpriteKit/ARSpriteKit.entitlements;
+				DEVELOPMENT_TEAM = JGCT2M485R;
 				INFOPLIST_FILE = ARSpriteKit/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.my.ARSpriteKit;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sara.ARGameN;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -295,10 +360,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_ENTITLEMENTS = ARSpriteKit/ARSpriteKit.entitlements;
+				DEVELOPMENT_TEAM = JGCT2M485R;
 				INFOPLIST_FILE = ARSpriteKit/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.my.ARSpriteKit;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sara.ARGameN;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -327,6 +397,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5FB7F6E32D47A6BB00A11172 /* CoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5FB7F6E42D47A6BB00A11172 /* CoreDataModel.xcdatamodel */,
+			);
+			currentVersion = 5FB7F6E42D47A6BB00A11172 /* CoreDataModel.xcdatamodel */;
+			path = CoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E4D1C0C21F0BEFC00065E5EE /* Project object */;
 }
